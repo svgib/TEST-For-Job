@@ -1,0 +1,31 @@
+---
+ - hosts: 'MysqlMAster'
+   gather_facts: no
+   vars_files: 
+    - 'vars/main.yml' 
+   tasks:
+    - name: 'Установка Mysql'
+      yum: name=mysql-server state=present
+      notify: 
+       - 'mysql server install'
+       
+    - name: 'Установка пакетов'
+      action: 'apt name={{ item }} state=latest update_cache=yes'
+      with_items: 
+	- wget
+	- vim
+	- net-tools
+	- bind
+	- bind-tools
+	- tcpdump
+	- python-mysqldb
+	- python-passlib
+	- unzip
+	- zip
+	- htop
+
+##################### Handlers #######################
+   handlers:
+
+    - name: 'mysql server install'
+      command: 'mysqladmin -u root password {{ mysql_root_pass }}'

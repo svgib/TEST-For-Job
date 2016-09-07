@@ -1,0 +1,53 @@
+---
+ - hosts: 'NGINXBackEnd'
+      
+    - name: 'Установка пакетов'
+	yum: name=ngnix state=present
+      with_items:
+	- wget
+	- vim
+	- net-tools
+	- bind
+	- bind-tools
+	- tcpdump
+       - 'python-mysqldb'
+       - 'python-passlib'
+       - 'nginx'
+       - 'php5-fpm'
+       - 'php5-mcrypt'
+       - 'php5-mysql'
+       - 'php5-curl'
+       - 'php-db'
+       - 'php5-gd'
+       - 'unzip'
+       - 'zip'
+       - 'htop'   
+
+    - name: 'Крнфигурация NGINX default host'
+      template: 'src=templates/nginx/default.j2 dest=/etc/nginx/sites-available/default backup=yes'
+      notify:
+       - 'nginx restart'
+
+    - name: 'Конфигурация php.ini'
+      template: 'src=templates/php-fpm/php.ini.j2 dest=/etc/php5/fpm/php.ini backup=yes'
+      notify:
+       - 'php-fpm restart'
+
+    - name: 'Timezone php-cli'
+      replace: 'dest=/etc/php5/cli/php.ini regexp="^;date.timezone =$" replace="date.timezone = Europe/Kiev" backup=yes'
+      
+    - name: 'Создаём /var/www'   
+      file: 'path=/var/www state=directory'
+
+##################### Handlers #######################
+   handlers:
+    - name: 'nginx restart'
+      service: 'name=nginx state=restarted'
+
+    - name: 'php-fpm restart'
+      service: 'name=php5-fpm state=restarted'
+
+
+
+
+ 

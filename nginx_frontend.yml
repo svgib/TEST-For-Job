@@ -1,0 +1,40 @@
+---
+ - hosts: 'NGINXFrontEnd'
+   gather_facts: no
+   tasks:
+    - name: 'Установка пакетов'
+      yum: name=ngnix state=present
+      with_items: 
+	- wget
+	- vim
+	- net-tools
+	- bind
+	- bind-tools
+	- tcpdump
+       - 'python-mysqldb'
+       - 'python-passlib'
+       - 'nginx'
+       - 'php5-mcrypt'
+       - 'php5-mysql'
+       - 'php5-curl'
+       - 'php-db'
+       - 'php5-gd'
+       - 'unzip'
+       - 'zip'
+       - 'htop'   
+
+    - name: 'Крнфигурация NGINX default host'
+      template: 'src=templates/nginx_frontend/nginx_conf_proxy.j2 dest=/etc/nginx/sites-available/default backup=yes'
+      notify:
+       - 'nginx restart'
+
+    - name: 'Создаём /var/www'   
+      file: 'path=/var/www state=directory'
+
+##################### Handlers #######################
+   handlers:
+    - name: 'nginx restart'
+      service: 'name=nginx state=restarted'
+
+
+ 

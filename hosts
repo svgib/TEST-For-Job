@@ -1,0 +1,20 @@
+[LXCClaster]
+CentOSClaster
+
+[NGINXFrontEnd]
+lxc0
+
+[NGINXBackEnd]
+lxc1
+lxc2
+
+[MysqlMAster]
+lxc3
+lxc4
+
+lxc0 ansible_ssh_port=22 ansible_ssh_host=xxx.xxx.xxx.xxx
+lxc1 ansible_ssh_port=22 ansible_ssh_host=xxx.xxx.xxx.xxx
+lxc2 ansible_ssh_port=22 ansible_ssh_host=xxx.xxx.xxx.xxx
+lxc3 ansible_ssh_port=22 ansible_ssh_host=xxx.xxx.xxx.xxx
+lxc4 ansible_ssh_port=22 ansible_ssh_host=xxx.xxx.xxx.xxx
+

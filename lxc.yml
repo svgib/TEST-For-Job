@@ -1,0 +1,37 @@
+---
+ - hosts: 'LXCClaster'
+   gather_facts: no
+   tasks:
+    - name: 'Установка LXC'
+      yum: name=lxc state=present
+      notify: 
+       - 'lxc server install'
+       
+	- name: Install LXC
+	apt: pkg=$items
+		with_items:
+		- lxc
+		- lxc-templates
+ 		- libcap-devel
+		- libcgroup	
+		- busybox
+		- wget
+		- bridge-utils
+		- vim
+		- net-tools
+		- bind
+		- bind-tools
+		- tcpdump
+
+	- name: Create 4 Virtuals CentOs
+		- shell: lxc-create -n lxc0 -t centos
+		- shell: lxc-clone lxc0 lxc1
+		- shell: lxc-clone lxc0 lxc2
+		- shell: lxc-clone lxc0 lxc3
+		- shell: lxc-clone lxc0 lxc4
+
+
+
+
+
+ 
